@@ -1,0 +1,9 @@
+- Why bash?
+
+The main goal is possibility for using the same abstrations at all stages of software development. I.e. ultimate goal is that the framework is good enough not only for writing tests, but also for:
+- cover both environment setup and actual functional/integration testing;
+- manual configuration and interaction with services during development;
+- operational scripting during development and maybe even deployment / production;
+- demo scripting (proof of concept, code snipets);
+- bug reports and fix verification.
+But scripts in the framework are not supposed to have big chunks of code - it is more like glue / guidelines.

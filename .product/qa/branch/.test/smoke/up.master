@@ -1,0 +1,10 @@
+set -ex
+
+./environ.sh qa9-master
+./environ.sh pg9-system2
+
+pg9*/status.sh > /dev/null || pg9*/start.sh
+
+qa9*/configure_db.sh pg9
+
+qa9*/stop.sh > /dev/null 2>&1 || :

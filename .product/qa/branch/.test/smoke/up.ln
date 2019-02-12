@@ -1,0 +1,14 @@
+set -ex
+
+[ -d openQA ] || git clone https://github.com/os-autoinst/openQA
+
+./environ.sh qa9 $(pwd)/openQA
+./environ.sh pg9-system2
+
+pg9*/status.sh > /dev/null || pg9*/start.sh
+
+qa9*/configure_db.sh pg9
+
+test -d qa9/src/script
+test -d qa9*/src/script
+

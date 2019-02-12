@@ -1,0 +1,20 @@
+set -ex
+
+./environ.sh ai9-master
+./environ.sh qa9-master
+./environ.sh pg9-system2
+
+pg9*/status.sh > /dev/null || pg9*/start.sh
+
+ln -sf `pwd`/ai9-master/src qa9-master/os-autoinst
+qa9*/configure_db.sh pg9
+
+[ -f qa9*/openqa/openqa.ini ] && exit 0
+
+( cd qa9* && mkdir -p openqa && touch openqa/openqa.ini )
+
+echo "[global]
+
+[auth]
+method = Fake
+" > qa9*/openqa/openqa.ini
