@@ -1,4 +1,5 @@
 set -ex
+trap 'test -z "$intrap" && export intrap=1 && kill -- -$$ 2>/dev/null || :' SIGINT SIGTERM EXIT
 
 ./environ.sh ai9-master
 ./environ.sh qa9-master

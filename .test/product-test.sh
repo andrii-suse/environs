@@ -29,10 +29,11 @@ for suite in .product/**/.test/* ; do
             [ $res -gt 0 ] || echo "*** PASS $t $upmode" >> .log/RES
             [ $res -eq 0 ] || echo "*** FAIL $((++fails))/$((++total)) $t $upmode"
             [ $res -eq 0 ] || echo "*** FAIL $t $upmode" >> .log/RES
+            [ $res -eq 0 ] || [ x${AUTOSTOP} != x1 ] || exit 1
         done
     done
 done
-
 echo TOTAL : PASS / SKIP / FAIL
 echo $total : $passes / $skips / $fails
+cat .log/RES
 ( exit $fails )

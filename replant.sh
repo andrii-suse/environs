@@ -2,12 +2,14 @@
 
 set -e
 
+[ ! -z $1 ] || exit 1
+
 productN=${1%-*}
 product=${productN%?}
 
 [ $productN = $1 ] || [[ "${1}" =~ ($productN-)(.*)$ ]] || { >&2 echo "Format error, expected {product}{[0-9]}-environ"; exit 1; }
 
-[ ! -x ./${1}/stop.sh ] || ./${1}/stop.sh || :
+[ ! -x ./${productN}*/stop.sh ] || ./${productN}*/stop.sh || :
 
 [ ! -d ./${productN}* ] || rm -rf ./${productN}*
 

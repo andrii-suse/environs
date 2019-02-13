@@ -9,7 +9,7 @@ product=${productN%?}
 [ $productN = $1 ] || [[ "${1}" =~ ($productN-)(.*)$ ]] || { >&2 echo "Format error, expected {product}{[0-9]}-environ"; exit 1; }
 
 # try to stop existing environ, if possible
-[ ! -x ./${1}/stop.sh ] || ./${1}/stop.sh || :
+[ ! -x ./${productN}*/stop.sh ] || ./${productN}*/stop.sh || :
 
 # if environ already exists do nothing, unless REBUILD is set
 [ ! -d ./${1} ] || [ x${REBUILD} == x1 ] || exit 0
