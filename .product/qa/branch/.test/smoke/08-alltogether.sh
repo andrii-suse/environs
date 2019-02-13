@@ -1,0 +1,33 @@
+. $(dirname "${BASH_SOURCE[0]}")/up.${1:-ln}
+
+ps auxwww | grep e2
+
+qa9*/dbus/stop.sh || :
+qa9*/dbus/start.sh
+qa9*/dbus/status.sh
+
+qa9*/ui/start.sh
+qa9*/ui/status.sh
+
+qa9*/livehandler/start.sh
+qa9*/livehandler/status.sh
+
+qa9*/websockets/start.sh
+qa9*/websockets/status.sh
+
+qa9*/dbus/status.sh
+qa9*/ui/status.sh
+qa9*/livehandler/status.sh
+qa9*/websockets/status.sh
+
+qa9*/livehandler/stop.sh
+qa9*/websockets/stop.sh
+qa9*/ui/stop.sh
+qa9*/dbus/stop.sh
+pg9*/stop.sh
+
+if qa9*/dbus/status.sh ; then exit 1; fi
+if qa9*/ui/status.sh ; then exit 1; fi
+if qa9*/livehandler/status.sh ; then exit 1; fi
+if qa9*/websockets/status.sh ; then exit 1; fi
+if pg9*/status.sh ; then exit 1; fi

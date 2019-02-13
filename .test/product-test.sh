@@ -1,4 +1,4 @@
-trap 'test -z "$intrap" && export intrap=1 && kill -- -$$' SIGINT SIGTERM EXIT
+trap 'test -z "$intrap" && export intrap=1 && kill -- -$$ > /dev/null ' SIGINT SIGTERM EXIT
 
 shopt -s nullglob
 shopt -s globstar

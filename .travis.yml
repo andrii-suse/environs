@@ -4,12 +4,12 @@ services:
 - docker
 env:
   global:
-  - COMMIT_AUTHOR_EMAIL=skynet@open.qa
+  - BASEIMAGE=registry.opensuse.org/devel/openqa/containers/openqa_dev:latest
   matrix:
   - E2MODE=master
   - E2MODE=ln
   - E2MODE=system2
 before_script:
-- docker pull registry.opensuse.org/devel/openqa/containers/openqa_dev:latest
+- docker pull $BASEIMAGE
 script:
-- docker run --name travis -v $(pwd):/e2 registry.opensuse.org/devel/openqa/containers/openqa_dev:latest -c "(cd /e2 && sudo -u \#$(id -u) .test/product-test.sh $E2MODE)"
+- docker run -v $(pwd):/e2 $BASEIMAGE -c "(cd /e2; useradd $(id -nu) -u $(id -u) || :; sudo -u \#$(id -u) .test/product-test.sh $E2MODE)"
