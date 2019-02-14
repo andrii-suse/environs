@@ -8,9 +8,6 @@ pg9*/sql.sh openqa_test "insert into api_keys(key, secret, user_id, t_created, t
 qa9*/worker1/start.sh
 qa9*/worker1/status.sh
 
-exit 0
-
 qa9*/worker1/stop.sh
 
-set +e
 if qa9*/worker1/status.sh ; then (exit 1) ; fi

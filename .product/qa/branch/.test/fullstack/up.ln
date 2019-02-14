@@ -12,15 +12,3 @@ pg9*/status.sh > /dev/null || pg9*/start.sh
 
 ln -sf `pwd`/ai9/src qa9/os-autoinst
 qa9*/configure_db.sh pg9
-
-if [ ! -f qa9*/openqa/openqa.ini ] ; then
-
-( cd qa9* && mkdir -p openqa && touch openqa/openqa.ini )
-
-echo "[global]
-#
-[auth]
-method = Fake
-" > qa9*/openqa/openqa.ini
-
-fi
