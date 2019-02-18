@@ -1,0 +1,17 @@
+{
+   "ARCH" : "i386",
+   "BACKEND" : "qemu",
+   "CASEDIR" : "__workdir/src/t/data/tests",
+   "CDMODEL" : "ide-cd",
+   "HDDMODEL" : "ide-drive",
+   "INTEGRATION_TESTS" : "1",
+   "ISO" : "__workdir/src/t/data/Core-7.2.iso",
+   "NEEDLES_DIR" : "__workdir/src/t/data/tests/needles",
+   "PRJDIR" : "__workdir/src/t/data",
+   "QEMU" : "i386",
+   "QEMU_NO_FDC_SET" : "1",
+   "QEMU_NO_KVM" : "1",
+   "QEMU_NO_TABLET" : "1",
+   "VERSION" : "1",
+   "VNC" : 90
+}

@@ -1,5 +1,4 @@
 failures=0
-set -x
 if __workdir/ui/status.sh ; then __workdir/ui/stop.sh || : $((failures++))  ; fi
 if __workdir/livehandler/status.sh ; then __workdir/livehandler/stop.sh || : $((failures++)) ; fi
 if __workdir/resource-allocator/status.sh ; then __workdir/resource-allocator/stop.sh || : $((failures++)) ; fi
