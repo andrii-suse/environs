@@ -1,14 +1,16 @@
 set -e
-[ ! -f __workdir/TEST_PG ] || {
+
+ifelse(__service,worker1,`',__service,worker2,`',__service,worker3,`',[ ! -f __workdir/TEST_PG ] || {
     export OPENQA_DATABASE=test
     export TEST_PG=$(cat __workdir/TEST_PG)
 }
 if [ -f __workdir/dbus/.vars ] ; then
     eval $(cat __workdir/dbus/.vars)
     export DBUS_SESSION_BUS_ADDRESS=${DBUS_SESSION_BUS_ADDRESS}
-fi
+fi)
 export OPENQA_BASEDIR=__workdir
-export OPENQA_CONFIG=__workdir/openqa
+export OPENQA_CONFIG=__workdir
+export OPENQA_LOGFILE=__workdir/__service/.log
 
 ifelse(__service,ui,port=$((__wid * 10 + 9526)),
 __service,websockets,port=$((__wid * 10 + 9527)),
@@ -27,7 +29,7 @@ __service,worker2,worker --isotovideo '__workdir/os-autoinst/isotovideo' --host 
 __service,worker3,worker --isotovideo '__workdir/os-autoinst/isotovideo' --host localhost:${port} --instance 3 --apikey 1234567890ABCDEF --apisecret 1234567890ABCDEF,
 openqa-__service))
 
-MOJO_LISTEN=http://localhost:${port} __srcdir/script/CMD >> __workdir/__service/.log 2>> __workdir/__service/.err &
+ifelse(__service,worker1,`',__service,worker2,`',__service,worker3,`',MOJO_LISTEN=http://localhost:${port} )__srcdir/script/CMD >> __workdir/__service/.cout 2>> __workdir/__service/.cerr &
 pid=$!
 echo $pid > __workdir/__service/.pid
 ifelse(__service,ui,
@@ -37,5 +39,4 @@ while kill -0 $pid 2>/dev/null ; do
     sleep 1
     echo -n .
 done,
-sleep 1
 __workdir/__service/status.sh)
