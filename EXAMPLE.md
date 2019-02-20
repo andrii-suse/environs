@@ -14,14 +14,14 @@ Let's assume we performed all steps above and found a problem, but you are not f
 The example above is very simplified version of what actually happens. Single mystery happened in Docker, but on practice small difference in each step may lead to different outcome. Moreover - each step takes a bit from brain resources and one day can fit quite limited number of such scenarios for single engineer.
 
 If both the Website and MariaDB had Environs defined (let's name them w1 and m1), the whole scenario would look like few lines in shell script, which leaves little chance for discrepancy in behavior. The same steps may look like:
-set -e
+```set -e
 w1/clone.sh
 w1/build.sh
 m1/download.sh && m1/init_db.sh
 w1/configure.sh m1
 m1/start.sh
 w1/start.sh
-m1/status.sh && w1/status.sh
+m1/status.sh && w1/status.sh```
 
 Note that to build MariaDB from source instead of downloading .tar distribution, one would have different Environ with commands like m1/clone.sh && m1/build.sh && m1/init_db.sh
 
