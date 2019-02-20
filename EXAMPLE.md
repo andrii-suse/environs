@@ -21,7 +21,8 @@ m1/download.sh && m1/init_db.sh
 w1/configure.sh m1
 m1/start.sh
 w1/start.sh
-m1/status.sh && w1/status.sh```
+m1/status.sh && w1/status.sh
+```
 
 Note that to build MariaDB from source instead of downloading .tar distribution, one would have different Environ with commands like m1/clone.sh && m1/build.sh && m1/init_db.sh
 
