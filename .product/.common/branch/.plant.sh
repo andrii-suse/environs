@@ -42,7 +42,7 @@ for filename in .product/${product}/branch/* ; do
         for src in ${folder}/* ; do
             dst=$workdir/$(basename $folder)/$(basename $src)
             m4 -D__wid=$wid -D__workdir=$workdir -D__srcdir=$srcdir -D__branch=$branch $src > $dst
-            chmod +x $dst
+	    [ "${dst##*.}" != sh ] || chmod +x $dst
         done
     else 
         m4 -D__wid=$wid -D__workdir=$workdir -D__srcdir=$srcdir -D__branch=$branch $filename > $workdir/$(basename $filename)

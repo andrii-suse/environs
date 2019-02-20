@@ -20,3 +20,23 @@ pg9*/sql.sh openqa_test "insert into api_keys(key, secret, user_id, t_created, t
 
 qa9*/worker1/start.sh
 qa9*/worker1/status.sh
+
+qa9*/example/start_job.sh
+
+# will wait 20*10 sec
+max_wait=20
+
+sleep 15
+
+set +x
+while [ $((max_wait--)) -gt 0 ] && qa9*/client.sh jobs get | grep result | tail -n 1 | grep -q none ; do
+    sleep 10
+    echo -n .
+done
+
+[ $max_wait -gt 0 ] || ( echo "Timeout exceeded"; exit 1 )
+qa9*/client.sh jobs get 
+qa9*/client.sh jobs get | grep result
+set -x
+qa9*/client.sh jobs get | grep result | tail -n 1 | grep passed
+

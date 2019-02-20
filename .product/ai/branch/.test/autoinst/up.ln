@@ -1,0 +1,6 @@
+set -ex
+trap 'test -z "$intrap" && export intrap=1 && kill -- -$$ 2>/dev/null || :' SIGINT SIGTERM EXIT
+
+git clone https://github.com/os-autoinst/os-autoinst || :
+
+./environ.sh ai9 $(pwd)/os-autoinst
