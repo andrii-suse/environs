@@ -9,7 +9,7 @@ In human language may look like this: (for simplicity let's assume that all syst
 6. Start website
 7. Check that both Db and website are up
 
-Let's assume we performed all steps above and found a problem, but you are not fully sure if it is real bug or issue with your environment. So you tried all the step in docker, but met different issue. This irritates a bit, so you asked help from a colleague, who also performed the same steps and confirmed that the problem indeed there. So you reported it to MariaDB Engineer, who was willing to help. Let's assume MariaDB Engineer successfully retried the same and confirmed that the issue happens only in the latest version. Now she tried the same, just building MariaDB from source in step 3. and during debugging a simple workaround was found. So you tried the steps again and were able to confirm that workaround is good and your Website works well with new MariaDB version.
+Let's assume all steps above were prformed and a problem was found, but it is not fully clear whether it is a real bug or an issue with environment. So the step were performed in docker, which led to a different issue. This irritates a bit, so we asked for help from a colleague, who also performed the same steps and confirmed that the problem indeed there. So it was reported to MariaDB Engineers, who were willing to help. Let's assume MariaDB Engineer successfully retried the same and confirmed that the issue happens only in the latest version. Now she tried again, just building MariaDB from source in step 3. and during debugging a simple workaround was found. So now we tried the steps again and were able to confirm that workaround was good and the Website works well with new MariaDB version.
 
 The example above is very simplified version of what actually happens. Single mystery happened in Docker, but on practice small difference in each step may lead to different outcome. Moreover - each step takes a bit from brain resources and one day can fit quite limited number of such scenarios for single engineer.
 
@@ -24,6 +24,6 @@ w1/start.sh
 m1/status.sh && w1/status.sh
 ```
 
-Note that to build MariaDB from source instead of downloading .tar distribution, one would have different Environ with commands like m1/clone.sh && m1/build.sh && m1/init_db.sh
+Note that to build MariaDB from source instead of downloading .tar distribution, one would have different Environ with commands like `m1/clone.sh && m1/build.sh && m1/init_db.sh`
 
-Maybe so far usage on Environs is not impressive, but it must be for sure justified when we complicate scenario further. Like comparing behavior when using different Website forks or using MariaDB Cluster or MariaDB with encryption with alternative database like Oracle/MySQL/PostgreSQL or intermediate configuration steps. If we can create Environ with these simple scripts like start.sh / status.sh / init_db.sh / etc for each involved Database diversity - the scripting will be very easy and robust.
+Maybe so far usage on Environs is not impressive, but it must be for sure justified when we complicate scenario further. Like comparing behavior when using different Website forks or using MariaDB Cluster or MariaDB with encryption with alternative database like Oracle/MySQL/PostgreSQL or intermediate configuration steps. If we can create Environ with these simple scripts like `start.sh` / `status.sh` / `init_db.sh` / etc for each involved Database diversity - the scripting will be very easy and robust.
