@@ -44,7 +44,8 @@ for filename in .product/${product}/branch/* ; do
             m4 -D__wid=$wid -D__workdir=$workdir -D__srcdir=$srcdir -D__branch=$branch $src > $dst
 	    [ "${dst##*.}" != sh ] || chmod +x $dst
         done
-    else 
+    else
+        [ ! -z ${branch} ] || [ $(basename $filename) != "clone.sh" ] || continue # skip clone.sh if branch is empty
         m4 -D__wid=$wid -D__workdir=$workdir -D__srcdir=$srcdir -D__branch=$branch $filename > $workdir/$(basename $filename)
         chmod +x $workdir/$(basename $filename)
     fi
