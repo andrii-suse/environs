@@ -2,10 +2,10 @@ set -ex
 trap 'test -z "$intrap" && export intrap=1 && kill -- -$$ 2>/dev/null || :' SIGINT SIGTERM EXIT
 
 ./environ.sh ai9-master
-./environ.sh qa9-master
+./environ.sh qa0-master
 ./environ.sh pg9-system2
 
 pg9*/status.sh > /dev/null || pg9*/start.sh
 
-ln -sf `pwd`/ai9-master/src qa9-master/os-autoinst
-qa9*/configure_db.sh pg9
+ln -sf `pwd`/ai9-master/src qa0-master/os-autoinst
+qa0*/configure_db.sh pg9
