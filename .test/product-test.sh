@@ -23,7 +23,8 @@ for suite in .product/**/.test/* ; do
         upmode=${upscript##*.}
         [ -z $1 ] || [ x$1 = x$upmode ] || continue 
         for t in $suite/*.sh ; do
-            bash -e $t $upmode 2>&1 | tee .log/$(basename $t).$upmode
+            # use setsid to create new process group for each test, so they can clean own subprocesses properly
+            setsid bash -e $t $upmode 2>&1 | tee .log/$(basename $t).$upmode
             res=${PIPESTATUS[0]}
             [ $res -gt 0 ] || echo "*** PASS $((++passes))/$((++total)) $t $upmode"
             [ $res -gt 0 ] || echo "*** PASS $t $upmode" >> .log/RES

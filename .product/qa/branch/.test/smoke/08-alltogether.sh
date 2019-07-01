@@ -1,26 +1,27 @@
 . $(dirname "${BASH_SOURCE[0]}")/up.${1:-ln}
 
-ps auxwww | grep e2
+qa9*/ui/start.sh
+qa9*/ui/status.sh
 
-qa0*/ui/start.sh
-qa0*/ui/status.sh
+qa9*/livehandler/start.sh
+qa9*/livehandler/status.sh
 
-qa0*/livehandler/start.sh
-qa0*/livehandler/status.sh
+qa9*/websockets/start.sh
+qa9*/websockets/status.sh
 
-qa0*/websockets/start.sh
-qa0*/websockets/status.sh
+# in fact services may stop shortly after startup, so let's wait briefly and check status once again
+sleep 2
 
-qa0*/ui/status.sh
-qa0*/livehandler/status.sh
-qa0*/websockets/status.sh
+qa9*/ui/status.sh
+qa9*/livehandler/status.sh
+qa9*/websockets/status.sh
 
-qa0*/livehandler/stop.sh
-qa0*/websockets/stop.sh
-qa0*/ui/stop.sh
+qa9*/livehandler/stop.sh
+qa9*/websockets/stop.sh
+qa9*/ui/stop.sh
 pg9*/stop.sh
 
-if qa0*/ui/status.sh ; then exit 1; fi
-if qa0*/livehandler/status.sh ; then exit 1; fi
-if qa0*/websockets/status.sh ; then exit 1; fi
+if qa9*/ui/status.sh ; then exit 1; fi
+if qa9*/livehandler/status.sh ; then exit 1; fi
+if qa9*/websockets/status.sh ; then exit 1; fi
 if pg9*/status.sh ; then exit 1; fi

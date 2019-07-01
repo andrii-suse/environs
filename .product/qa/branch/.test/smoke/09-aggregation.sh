@@ -3,17 +3,17 @@ set -e
 
 pg9*/status.sh || pg9*/start.sh
 
-qa0*/start.sh
-qa0*/status.sh
-qa0*/ui/status.sh
-qa0*/livehandler/status.sh
-qa0*/websockets/status.sh
+qa9*/start.sh
+qa9*/status.sh
+qa9*/ui/status.sh
+qa9*/livehandler/status.sh
+qa9*/websockets/status.sh
 
-qa0*/stop.sh
+qa9*/stop.sh
 sleep 1
-if qa0*/ui/status.sh ; then exit 1; fi
-if qa0*/livehandler/status.sh ; then exit 1; fi
-if qa0*/websockets/status.sh ; then exit 1; fi
-if qa0*/status.sh ; then exit 1; fi
+if qa9*/ui/status.sh ; then exit 1; fi
+if qa9*/livehandler/status.sh ; then exit 1; fi
+if qa9*/websockets/status.sh ; then exit 1; fi
+if qa9*/status.sh ; then exit 1; fi
 pg9*/stop.sh
 if pg9*/status.sh ; then exit 1; fi
