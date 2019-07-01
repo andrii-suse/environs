@@ -1,0 +1,16 @@
+set -ex
+trap 'test -z "$intrap" && export intrap=1 && kill -- -$$ 2>/dev/null || :' SIGINT SIGTERM EXIT
+
+./environ.sh qa9-master
+./environ.sh qa8-master
+./environ.sh pg9-system2
+./environ.sh pg8-system2
+
+pg9*/status.sh > /dev/null || pg9*/start.sh
+pg8*/status.sh > /dev/null || pg8*/start.sh
+
+qa9*/configure_db.sh pg9
+qa8*/configure_db.sh pg8
+
+qa9*/stop.sh > /dev/null 2>&1 || :
+qa8*/stop.sh > /dev/null 2>&1 || :
