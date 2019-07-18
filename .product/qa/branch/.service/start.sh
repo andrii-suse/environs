@@ -5,7 +5,7 @@ ifelse(__service,worker1,`',__service,worker2,`',__service,worker3,`',[ ! -f __w
     export TEST_PG=$(cat __workdir/TEST_PG)
 })
 export OPENQA_BASEDIR=__workdir
-export OPENQA_CONFIG=__workdir
+export OPENQA_CONFIG=__workdir/openqa
 export OPENQA_LOGFILE=__workdir/__service/.log
 
 port=$((__wid * 10 + 9526))
