@@ -30,4 +30,4 @@ port=$((__wid * 10 + 9526))
 
 generate_data > __workdir/example/param.json
 
-__srcdir/script/client --param __workdir/example/param.json --host 127.0.0.1:${port} --apikey 1234567890ABCDEF --apisecret 1234567890ABCDEF jobs post
+__srcdir/script/client --param __workdir/example/param.json --host http://127.0.0.1:${port} --apikey 1234567890ABCDEF --apisecret 1234567890ABCDEF jobs post
