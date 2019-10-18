@@ -7,6 +7,7 @@
    "INTEGRATION_TESTS" : "1",
    "ISO" : "__workdir/src/t/data/Core-7.2.iso",
    "NEEDLES_DIR" : "__workdir/src/t/data/tests/needles",
+   "NOVIDEO" : "1",
    "PRJDIR" : "__workdir/src/t/data",
    "QEMU" : "i386",
    "QEMU_NO_FDC_SET" : "1",

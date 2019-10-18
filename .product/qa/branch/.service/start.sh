@@ -12,6 +12,7 @@ port=$((__wid * 10 + 9526))
 mkdir -p __workdir/openqa/db
 
 define(`CMD',ifelse(__service,ui,openqa daemon,
+__service,gru,openqa gru run,
 __service,worker1,worker --isotovideo '__workdir/os-autoinst/isotovideo' --host http://127.0.0.1:${port} --instance 1 --apikey 1234567890ABCDEF --apisecret 1234567890ABCDEF,
 __service,worker2,worker --isotovideo '__workdir/os-autoinst/isotovideo' --host http://127.0.0.1:${port} --instance 2 --apikey 1234567890ABCDEF --apisecret 1234567890ABCDEF,
 __service,worker3,worker --isotovideo '__workdir/os-autoinst/isotovideo' --host http://127.0.0.1:${port} --instance 3 --apikey 1234567890ABCDEF --apisecret 1234567890ABCDEF,
