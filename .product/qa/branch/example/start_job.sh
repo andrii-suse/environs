@@ -1,6 +1,8 @@
 set -e
 mkdir -p __workdir/openqa/share/factory/iso
 mkdir -p __workdir/openqa/testresults/
+mkdir -p __workdir/openqa/share/demo/
+ln -sf __workdir/os-autoinst/t/data/tests __workdir/openqa/share/demo/
 ln -sf __workdir/os-autoinst/t/data/Core-7.2.iso __workdir/openqa/share/factory/iso/
 ln -sf __workdir/os-autoinst/t/data/tests/needles __workdir/openqa/share/
 
