@@ -2,6 +2,7 @@ ui
 livehandler
 websockets
 scheduler
+gru
 worker1
 worker2
 worker3
