@@ -21,14 +21,17 @@ dt="${workdir}/dt"
 wid=${productN: -1}
 
 (
+
+[ "$product" != ap  ] || port=$(($wid * 10 + 1234))
+
 shopt -s nullglob
 for filename in .product/.common/system2/* ; do
-    m4 -D__wid=$wid -D__workdir=$workdir -D__datadir=$dt $filename > $workdir/$(basename $filename)
+    m4 -D__wid=$wid -D__workdir=$workdir -D__datadir=$dt -D__port=$port $filename > $workdir/$(basename $filename)
     chmod +x $workdir/$(basename $filename)
 done || :
 
 for filename in .*/${product}/system2/* ; do
-    m4 -D__wid=$wid -D__workdir=$workdir -D__datadir=$dt $filename > $workdir/$(basename $filename)
+    m4 -D__wid=$wid -D__workdir=$workdir -D__datadir=$dt -D__port=$port $filename > $workdir/$(basename $filename)
     chmod +x $workdir/$(basename $filename)
 done || :
 )
