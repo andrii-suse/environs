@@ -1,26 +1,24 @@
 set -e
+eval $(grep ^PRETTY_NAME= /etc/*-release | sed 's/ /_/g')
+echo $PRETTY_NAME
 
-sudo zypper -n install apache2-devel meson libapr-util1-dbd-pgsql python3-PyDispatcher python3-dnspython python3-pycountry
+zypper -n install apache2-devel libapr-util1-dbd-pgsql python3-PyDispatcher python3 python3-devel python wget curl sudo m4 git-core perl-Config-IniFiles perl-DBD-Pg perl-Digest-MD4 perl-TimeDate perl-libwww-perl
+ln /usr/sbin/httpd /sbin/httpd
 
-eval $(grep ^NAME= /etc/*-release | sed 's/ /_/')
+zypper -n addrepo https://download.opensuse.org/repositories/Apache:/MirrorBrain/$PRETTY_NAME/ Apache:MirrorBrain 
+zypper -n addrepo https://download.opensuse.org/repositories/server:/database:/postgresql/$PRETTY_NAME/ server:database:postgresql
+zypper -n --gpg-auto-import-keys --no-gpg-checks refresh
 
-wget -nv -r -l1 -np https://download.opensuse.org/repositories/Apache:/MirrorBrain/$NAME/x86_64 -A 'apache2-mod_form*.rpm' -A 'apache2-mod_asn*.rpm'  -R '*debug*' -P .
-sudo rpm --replacepkgs -i download.opensuse.org/repositories/Apache:/MirrorBrain/$NAME/x86_64/*
-
-wget -nv -r -l1 -np https://download.opensuse.org/repositories/Apache:/MirrorBrain/$NAME/noarch -A 'python3-*.rpm' -R '*debug*' -P .
-
-for x in download.opensuse.org/repositories/Apache:/MirrorBrain/$NAME/noarch/*; do 
-    sudo rpm --replacepkgs -i $x || :
-done
-
-sudo zypper -n addrepo https://download.opensuse.org/repositories/server:/database:/postgresql/$NAME/ server:database:postgresql
-sudo zypper -n --gpg-auto-import-keys --no-gpg-checks refresh
+zypper -n install apache2-devel apache2-worker apache2-mod_asn apache2-mod_maxminddb apache2-mod_form \
+    postgresql-server \
+    python3-cmdln python3-SQLObject python3-psycopg2 python3-FormEncode \
+    'libmaxminddb-devel>=1.4.2' 'apache2-mod_maxminddb>=1.2.0' 'python3-geoip2>=3.0.0' 'python3-maxminddb>=1.5.2' 'meson>=0.54'
 
 # we must get rid of this except eventual migrations
 v=$(psql -V)
-if [ "$v" == *10.* ]; then
-   sudo zypper -n in postgresql10-ip4r
+if [[ "$v" == *10.* ]]; then
+   zypper -n in postgresql10-ip4r
 else
-   sudo zypper -n in postgresql12-ip4r
+   zypper -n in postgresql12-ip4r
 fi
 

@@ -1,3 +1,5 @@
+set -e
+
 ./environ.sh pg9-system2
 ./environ.sh ap9-system2
 ./environ.sh ap8-system2
