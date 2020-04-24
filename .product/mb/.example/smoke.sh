@@ -9,10 +9,27 @@ set -e
 pg9*/start.sh
 mb9*/configure_db.sh pg9
 
-sed -i "/LoadModule dbd_module/a LoadModule mirrorbrain_module $(pwd)/mb9-opensuse/src/build/mod_mirrorbrain/mod_mirrorbrain.so\nDBDriver pgsql\nDBDParams \"host=$(pwd)/pg9-system2/dt user=$USER dbname=mirrorbrain connect_timeout=15\"\nMirrorBrainMetalinkPublisher 'ap9' http://127.0.0.1" ap9*/httpd.conf
+ap9=$(ls -d ap9*)
 
-sed -i '/Directory /a MirrorBrainEngine On\nMirrorBrainDebug On\nFormGET On\nMirrorBrainHandleHEADRequestLocally Off\nMirrorBrainMinSize 0\nMirrorBrainExcludeUserAgent rpm\/4.4.2*\nMirrorBrainExcludeUserAgent *APT-HTTP*\nMirrorBrainExcludeMimeType application\/pgp-keys' ap9*/httpd.conf
+# sed -i "/LoadModule dbd_module/a LoadModule mirrorbrain_module $(pwd)/mb9-opensuse/src/build/mod_mirrorbrain/mod_mirrorbrain.so\nDBDriver pgsql\nDBDParams \"host=$(pwd)/pg9-system2/dt user=$USER dbname=mirrorbrain connect_timeout=15\"\nMirrorBrainMetalinkPublisher 'ap9' http://127.0.0.1" ap9*/httpd.conf
 
+# sed -i '/Directory /a MirrorBrainEngine On\nMirrorBrainDebug On\nFormGET On\nMirrorBrainHandleHEADRequestLocally Off\nMirrorBrainMinSize 0\nMirrorBrainExcludeUserAgent rpm\/4.4.2*\nMirrorBrainExcludeUserAgent *APT-HTTP*\nMirrorBrainExcludeMimeType application\/pgp-keys' ap9*/httpd.conf
+
+echo "
+LoadModule mirrorbrain_module $(pwd)/mb9-opensuse/src/build/mod_mirrorbrain/mod_mirrorbrain.so
+DBDriver pgsql
+DBDParams \"host=$(pwd)/pg9-system2/dt user=$USER dbname=mirrorbrain connect_timeout=15\"
+MirrorBrainMetalinkPublisher 'ap9' http://127.0.0.1" >> $ap9/httpd.conf
+
+echo "
+MirrorBrainEngine On
+MirrorBrainDebug On
+FormGET On
+MirrorBrainHandleHEADRequestLocally Off
+MirrorBrainMinSize 0
+MirrorBrainExcludeUserAgent rpm\/4.4.2*
+MirrorBrainExcludeUserAgent *APT-HTTP*
+MirrorBrainExcludeMimeType application\/pgp-keys" > $ap9/directory-mirrorbrain.conf
 
 # populate test data
 for x in ap7 ap8 ap9; do

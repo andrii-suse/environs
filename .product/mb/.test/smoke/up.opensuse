@@ -1,0 +1,23 @@
+set -ex
+trap 'test -z "$intrap" && export intrap=1 && kill -- -$$ 2>/dev/null || :' SIGINT SIGTERM EXIT
+
+./environ.sh pg9-system2
+./environ.sh ap9-system2
+./environ.sh ap8-system2
+./environ.sh ap7-system2
+./environ.sh mb9-opensuse
+
+pg9*/status.sh 2 > /dev/null || pg9*/start.sh
+mb9*/configure_db.sh pg9
+
+mb9*/configure_apache.sh ap9
+pg9*/configure_apache.sh ap9
+
+for x in ap7 ap8 ap9; do
+    mkdir -p $x-system2/dt/downloads/{folder1,folder2,folder3}
+    echo $x-system2/dt/downloads/{folder1,folder2,folder3}/{file1,file2}.dat | xargs -n 1 touch
+done
+
+ap9*/start.sh
+ap9*/status.sh
+ap9*/curl.sh downloads/folder1/ | grep file1.dat
