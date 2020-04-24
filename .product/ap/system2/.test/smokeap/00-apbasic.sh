@@ -12,7 +12,6 @@ ap9-system2/curl.sh
 echo $?
 
 ap9-system2/status.sh 2>/dev/null || { echo "status.sh expected to return no error ($((n++)))"; exit 1; }
-# ap9-system2/sql.sh openqa_test 'select version()'
 
 cat ap9-system2/dt/error_log
 
