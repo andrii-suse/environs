@@ -1,0 +1,3 @@
+
+set -e
+./replant.sh pg9-system2

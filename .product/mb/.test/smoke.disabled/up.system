@@ -1,4 +1,9 @@
-set -ex
+
+[ "${PRIVILEGED_TESTS}" == 1 ] || {
+    echo "Skipped $0: define PRIVILEGED_TESTS to run it"
+    exit 0
+}
+
 trap 'test -z "$intrap" && export intrap=1 && kill -- -$$ 2>/dev/null || :' SIGINT SIGTERM EXIT
 
 ./environ.sh pg9-system2
@@ -14,7 +19,6 @@ pg9*/status.sh 2 > /dev/null || pg9*/start.sh
 mb9*/configure_db.sh pg9
 
 mb9*/configure_apache.sh ap9
-pg9*/configure_apache.sh ap9
 
 for x in ap7 ap8 ap9; do
     mkdir -p $x-system2/dt/downloads/{folder1,folder2,folder3}

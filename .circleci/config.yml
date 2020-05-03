@@ -1,0 +1,18 @@
+version: 2.1
+
+jobs:
+  test_mb:
+    machine:
+      image: ubuntu-1604:201903-01
+    steps:
+      - checkout
+      - run:
+          command: |
+            git clone https://github.com/coryb/osht ../osht
+            sudo OSHT_LOCATION=$(pwd)/../osht PRIVILEGED_TESTS=1 .product/mb/.example/system.sh
+
+workflows:
+  version: 2.1
+  test:
+    jobs:
+      - test_mb

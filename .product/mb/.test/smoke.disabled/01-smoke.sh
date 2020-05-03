@@ -1,3 +1,4 @@
+set -ex
 . $(dirname "${BASH_SOURCE[0]}")/up.${1:-ln}
 
 ap9*/start.sh
