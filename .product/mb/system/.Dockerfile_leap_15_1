@@ -1,0 +1,5 @@
+FROM opensuse/leap:15.1
+
+ADD .product/mb/system/.install.sh /.install.sh
+
+RUN bash -x /.install.sh Apache:MirrorBrain:development

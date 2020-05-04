@@ -1,4 +1,4 @@
-trap 'test -z "$intrap" && export intrap=1 && kill -- -$$ > /dev/null ' SIGINT SIGTERM EXIT
+trap 'test -z "$intrap" && export intrap=1 && kill -- -$$ 2> /dev/null ' SIGINT SIGTERM EXIT
 
 shopt -s nullglob
 shopt -s globstar
@@ -11,6 +11,7 @@ date > .log/RES
 for suite in .product/**/.test/* ; do
     test -d $suite || continue
     echo TESTSUITE $suite:
+    [[ ! $suite =~ .disabled ]] || continue
     # if [ -f $(dirname "$suite")/up ] && ! $(dirname "$suite")/.check_prerequisites.sh ; then
     #     echo "*** SKIP $((++skips))/$((++total)) $suite"
     # fi

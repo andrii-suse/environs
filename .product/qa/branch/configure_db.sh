@@ -9,4 +9,4 @@ matches=$(ls -la $pgsqlN*/get_connect_string.sh | wc -l)
 
 [ $matches -eq 1 ] || ( >&2 echo "Ambigous $pgsqlN*/get_connect_string.sh"; exit 1 )
 
-$pgsqlN*/get_connect_string.sh > __workdir/TEST_PG
+$pgsqlN*/get_connect_string.sh openqa_test > __workdir/TEST_PG

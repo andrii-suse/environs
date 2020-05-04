@@ -1,0 +1,1 @@
+sudo rcpostgresql stop
