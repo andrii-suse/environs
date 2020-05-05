@@ -51,7 +51,11 @@ PLAN 1
 
 cp $thisdir/../../system/.install.sh $thisdir/
 
-docker build -t $ident.image $thisdir
+baseimage=${BASEIMAGE:-opensuse/leap:15.1}
+obsproject=${OBSPROJECT:-Apache:MirrorBrain:development}
+
+m4 -D__BASEIMAGE=$baseimage -D__OBSPROJECT=$obsproject $thisdir/Dockerfile.m4 | \
+    docker build -t $ident.image -f- $thisdir
 
 map_port=""
 [ -z "$EXPOSE_PORT" ] || map_port="-p $EXPOSE_PORT:80"

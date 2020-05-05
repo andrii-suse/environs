@@ -1,5 +1,5 @@
 #!BuildTag: serviced
-FROM opensuse/leap:15.1
+FROM __BASEIMAGE
 ENV container docker
 
 ENV LANG en_US.UTF-8
@@ -22,7 +22,7 @@ RUN systemctl enable dbus.service
 
 ADD .install.sh /.install.sh
 
-RUN bash -x /.install.sh Apache:MirrorBrain:development
+RUN bash -x /.install.sh __OBSPROJECT
 
 WORKDIR /opt/project
 
