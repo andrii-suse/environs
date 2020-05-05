@@ -12,6 +12,9 @@ fi
 
 zypper -n install systemd curl hostname iputils vim command-not-found bsdtar zip sudo wget gcc gzip patch m4
 
+# mirrorbrain brings sql files in /usr/share/doc/packages, so we adjust config 
+sed -i 's,rpm.install.excludedocs = yes,rpm.install.excludedocs = no,' /etc/zypp/zypp.conf
+
 if [[ $proj =~ :development ]]; then
     v=3
     parent=${proj%:development}
@@ -38,10 +41,6 @@ if ! zypper lr | grep server:database:postgresql; then
        zypper -n in postgresql12-ip4r
     fi
 fi
-
-zypper -n install apache2-devel apache2-worker apache2-mod_asn apache2-mod_form \
-    python3-devel python3-cmdln python3-SQLObject python3-psycopg2 python3-FormEncode \
-    'libmaxminddb-devel>=1.4.2' 'apache2-mod_maxminddb>=1.2.0' 'python3-geoip2>=3.0.0' 'python3-maxminddb>=1.5.2'
 
 [ -f /etc/mirrorbrain.conf ] || {
 cat > /etc/mirrorbrain.conf <<EOF
