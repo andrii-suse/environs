@@ -1,0 +1,3 @@
+
+set -e
+./replant.sh rs9-system2
