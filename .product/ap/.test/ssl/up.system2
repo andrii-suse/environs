@@ -1,0 +1,4 @@
+set -e
+./replant.sh ap9-system2
+ap9-system2/configure_add_https.sh
+
