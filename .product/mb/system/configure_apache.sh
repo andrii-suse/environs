@@ -6,6 +6,7 @@ set -e
 echo "Include $PWD/$(ls -d $apN*/)/httpd.conf" | sudo tee /etc/apache2/conf.d/environs.conf
 
 echo "# LoadModule memcache_module /usr/lib64/apache2/mod_memcache.so
+LoadModule form_module        /usr/lib64/apache2/mod_form.so
 LoadModule mirrorbrain_module /usr/lib64/apache2/mod_mirrorbrain.so
 " > $(ls -d $apN*/)/extra-mirrorbrain.conf
 
