@@ -1,0 +1,1 @@
+PYTHONPATH=$(ls -d __workdir/src/install/usr/lib/python3.*/site-packages/ | tail -n1)  __workdir/src/install/usr/bin/mirrorprobe --config __workdir/mirrorbrain.conf --log __workdir/mirrorprobe.log "$@" $extra
