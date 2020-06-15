@@ -22,17 +22,15 @@ if [[ $proj =~ :development ]]; then
     zypper lr | grep "$parent\s"  || zypper -n addrepo https://download.opensuse.org/repositories/$parentpath/$repo $parent
 fi
 
-if ! zypper lr | grep "$proj\s"; then
-    zypper -n addrepo https://download.opensuse.org/repositories/$projpath/$repo $proj
-    zypper -n --gpg-auto-import-keys --no-gpg-checks refresh
-    zypper -n install --from $proj mirrorbrain mirrorbrain-scanner mirrorbrain-tools python$v-mb apache2-mod_maxminddb apache2-mod_mirrorbrain
-fi
-
 # this is needed only for ip4r, which we should get rid of
 if ! zypper lr | grep server:database:postgresql; then
     zypper -n addrepo https://download.opensuse.org/repositories/server:/database:/postgresql/$repo server:database:postgresql
+fi
+
+if ! zypper lr | grep "$proj\s"; then
+    zypper -n addrepo https://download.opensuse.org/repositories/$projpath/$repo $proj
     zypper -n --gpg-auto-import-keys --no-gpg-checks refresh
-    zypper -n install postgresql postgresql-server
+    zypper -n install --from $proj mirrorbrain mirrorbrain-scanner mirrorbrain-tools python$v-mb apache2-mod_maxminddb apache2-mod_mirrorbrain postgresql postgresql-server
 
     v=$(psql -V)
     if [[ "$v" == *10.* ]]; then
