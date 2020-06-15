@@ -8,6 +8,7 @@ LoadModule mirrorbrain_module __srcdir/build/mod_mirrorbrain/mod_mirrorbrain.so"
 
 sed "s,__apn,$apN," __workdir/extra-postgresql.conf > $(ls -d $apN*/)/extra-postgresql.conf
 
+(
 echo "
 MirrorBrainEngine On
 MirrorBrainDebug On
@@ -16,4 +17,11 @@ MirrorBrainHandleHEADRequestLocally Off
 MirrorBrainMinSize 0
 MirrorBrainExcludeUserAgent rpm\/4.4.2*
 MirrorBrainExcludeUserAgent *APT-HTTP*
-MirrorBrainExcludeMimeType application\/pgp-keys" > $(ls -d $apN*/)/directory-mirrorbrain.conf
+MirrorBrainExcludeMimeType application\/pgp-keys" 
+
+shift
+for i in "$@"; do 
+    echo $i 
+done
+
+)> $(ls -d $apN*/)/directory-mirrorbrain.conf
