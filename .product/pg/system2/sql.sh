@@ -1,5 +1,5 @@
 if [[ $1 == -* ]] ; then
-PGHOST=__datadir psql "$@"
+PGHOST=__datadir psql -P pager=off "$@"
 elif [ -z "$2" ]; then
 PGHOST=__datadir psql $1
 else
