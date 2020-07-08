@@ -7,7 +7,10 @@ set -e
 port=$((__wid * 10 + 3100))
 mkdir -p __workdir/dt
 
-MIRRORCACHE_ROOT=__workdir/dt MOJO_LISTEN=http://127.0.0.1:${port} __srcdir/script/mirrorcache prefork -i 100 -H 400 -w 30 -c 1 -G 800 >> __workdir/.cout 2>> __workdir/.cerr &
+MIRRORCACHE_ROOT=__workdir/dt \
+MIRRORCACHE_CITY_MMDB=__srcdir/t/data/city.mmdb \
+MOJO_LISTEN=http://127.0.0.1:${port} \
+__srcdir/script/mirrorcache daemon -i 100 -H 400 -w 30 -c 1 -G 800 >> __workdir/.cout 2>> __workdir/.cerr &
 
 pid=$!
 echo $pid > __workdir/.pid
