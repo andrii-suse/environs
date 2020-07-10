@@ -16,7 +16,7 @@ pid=$!
 echo $pid > __workdir/.pid
 echo "Waiting (pid $pid) at http://127.0.0.1:${port}"
 while kill -0 $pid 2>/dev/null ; do 
-    { ( curl --max-time 2 -sI http://127.0.0.1:${port}/download/ | grep 200 ) && break; } || :
+    { ( curl --max-time 2 -sI http://127.0.0.1:${port}/download/ | grep -E '200|302' ) && break; } || :
     sleep 1
     echo -n .
 done
