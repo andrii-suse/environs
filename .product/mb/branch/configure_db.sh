@@ -49,8 +49,9 @@ $pgsqlN*/create.sh db mirrorbrain || :
 
 $pgsqlN*/sql.sh -c 'CREATE EXTENSION ip4r' mirrorbrain || :
 $pgsqlN*/sql.sh -f __workdir/src/sql/schema-postgresql.sql mirrorbrain
-$pgsqlN*/sql.sh -f __workdir/src/sql/migrations/schema-postgresql-add-filearr_split_path_trigger.sql mirrorbrain
 $pgsqlN*/sql.sh -f __workdir/src/sql/initialdata-postgresql.sql mirrorbrain
+$pgsqlN*/sql.sh -f __workdir/src/sql/migrations/0002-schema-postgresql-move-to-mapping-table.sql mirrorbrain
+$pgsqlN*/sql.sh -f __workdir/src/sql/migrations/0003-schema-postgresql-migrate-to-mapping-table.sql mirrorbrain
 
 echo "
 DBDriver pgsql
