@@ -10,13 +10,13 @@ mkdir -p __workdir/dt
 MIRRORCACHE_ROOT=${MIRRORCACHE_ROOT:-__workdir/dt} \
 MIRRORCACHE_CITY_MMDB=__srcdir/t/data/city.mmdb \
 MOJO_LISTEN=http://127.0.0.1:${port} \
-__srcdir/script/mirrorcache daemon -i 100 -H 400 -w 30 -c 1 -G 800 >> __workdir/.cout 2>> __workdir/.cerr &
+__srcdir/script/mirrorcache daemon >> __workdir/.cout 2>> __workdir/.cerr &
 
 pid=$!
 echo $pid > __workdir/.pid
 echo "Waiting (pid $pid) at http://127.0.0.1:${port}"
 while kill -0 $pid 2>/dev/null ; do 
-    { ( curl --max-time 2 -sI http://127.0.0.1:${port}/download/ | grep -E '200|302' ) && break; } || :
+    { ( curl --max-time 2 -sI http://127.0.0.1:${port}/ | grep -E '200|302' ) && break; } || :
     sleep 1
     echo -n .
 done
