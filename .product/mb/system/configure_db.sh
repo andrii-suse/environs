@@ -32,10 +32,15 @@ $pgsqlN*/create.sh user $($pgsqlN*/get_config.sh user) || :
 $pgsqlN*/create.sh db mirrorbrain || :
 
 $pgsqlN*/sql.sh -c 'CREATE EXTENSION ip4r' mirrorbrain $($pgsqlN*/get_config.sh user mirrorbrain) || :
-$pgsqlN*/sql.sh -f /usr/share/doc/packages/mirrorbrain/sql/schema-postgresql.sql mirrorbrain $($pgsqlN*/get_config.sh user mirrorbrain)
-$pgsqlN*/sql.sh -f /usr/share/doc/packages/mirrorbrain/sql/migrations/schema-postgresql-add-filearr_split_path_trigger.sql mirrorbrain $($pgsqlN*/get_config.sh user mirrorbrain)
-$pgsqlN*/sql.sh -f /usr/share/doc/packages/mirrorbrain/sql/initialdata-postgresql.sql mirrorbrain $($pgsqlN*/get_config.sh user mirrorbrain)
-
+$pgsqlN*/sql.sh -f /usr/share/doc/packages/mirrorbrain*/sql/schema-postgresql.sql mirrorbrain $($pgsqlN*/get_config.sh user mirrorbrain)
+if [ -f /usr/share/doc/packages/mirrorbrain*/sql/migrations/schema-postgresql-add-filearr_split_path_trigger.sql ] ; then
+    $pgsqlN*/sql.sh -f /usr/share/doc/packages/mirrorbrain*/sql/migrations/schema-postgresql-add-filearr_split_path_trigger.sql mirrorbrain $($pgsqlN*/get_config.sh user mirrorbrain)
+    $pgsqlN*/sql.sh -f /usr/share/doc/packages/mirrorbrain*/sql/initialdata-postgresql.sql mirrorbrain $($pgsqlN*/get_config.sh user mirrorbrain)
+else
+    $pgsqlN*/sql.sh -f /usr/share/doc/packages/mirrorbrain*/sql/initialdata-postgresql.sql mirrorbrain $($pgsqlN*/get_config.sh user mirrorbrain)
+    $pgsqlN*/sql.sh -f /usr/share/doc/packages/mirrorbrain*/sql/migrations/0002-schema-postgresql-move-to-mapping-table.sql mirrorbrain $($pgsqlN*/get_config.sh user mirrorbrain)
+    $pgsqlN*/sql.sh -f /usr/share/doc/packages/mirrorbrain*/sql/migrations/0003-schema-postgresql-migrate-to-mapping-table.sql mirrorbrain $($pgsqlN*/get_config.sh user mirrorbrain)
+fi
 echo "
 DBDriver pgsql
 DBDParams \"host=$($pgsqlN*/get_config.sh host) user=$($pgsqlN*/get_config.sh user mirrorbrain) password=$($pgsqlN*/get_config.sh user mirrorbrain) dbname=mirrorbrain connect_timeout=15\"
