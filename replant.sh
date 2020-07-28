@@ -11,6 +11,11 @@ product=${productN%?}
 
 [ ! -x ./${productN}*/stop.sh ] || ./${productN}*/stop.sh || :
 
+for f in ./${productN}*/*/stop.sh; do
+    test -x $f || continue
+    $f
+done
+
 [ ! -d ./${productN}* ] || rm -rf ./${productN}*
 
 mkdir ./${1}
