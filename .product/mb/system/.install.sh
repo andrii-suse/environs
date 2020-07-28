@@ -30,7 +30,7 @@ fi
 if ! zypper lr | grep "$proj\s"; then
     zypper -n addrepo https://download.opensuse.org/repositories/$projpath/$repo $proj
     zypper -n --gpg-auto-import-keys --no-gpg-checks refresh
-    zypper -n install --from $proj mirrorbrain mirrorbrain-scanner mirrorbrain-tools python$v-mb apache2-mod_maxminddb apache2-mod_mirrorbrain postgresql postgresql-server
+    zypper -n install --from $proj mirrorbrain$v mirrorbrain$v-scanner mirrorbrain$v-tools python$v-mb apache2-mod_maxminddb apache2-mod_mirrorbrain postgresql postgresql-server
 
     v=$(psql -V)
     if [[ "$v" == *10.* ]]; then
@@ -75,4 +75,5 @@ sed -i 's,\#deadlock_timeout = 1s,deadlock_timeout = 10,' /var/lib/pgsql/data/po
 
 # this is needed for system2 environ to run without root
 ln -s /usr/sbin/httpd /sbin/httpd
-
+which mb || ( ln -n $(which mb3) /usr/bin/mb )
+which mirrorprobe || ( ln -n $(which mirrorprobe3) /usr/bin/mirrorprobe )

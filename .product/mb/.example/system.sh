@@ -25,7 +25,7 @@ done
 
 mkdir -p ap9-system/hashes
 
-mb9*/mb.sh makehashes $PWD/ap9-system/dt/downloads -t $PWD/ap9-system/hashes/downloads
+mb9*/mb.sh makehashes -v $PWD/ap9-system/dt
 
 ap9*/start.sh
 sleep 1
