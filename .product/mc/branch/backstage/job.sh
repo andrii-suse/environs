@@ -7,6 +7,6 @@ set -e
 [ "$#" -ne 1 ] || extra=-e
 
 MIRRORCACHE_ROOT=${MIRRORCACHE_ROOT:-__workdir/dt} \
-MIRRORCACHE_CITY_MMDB=__srcdir/t/data/city.mmdb \
+MIRRORCACHE_CITY_MMDB=${MIRRORCACHE_CITY_MMDB-__srcdir/t/data/city.mmdb} \
 MOJO_LISTEN=http://127.0.0.1:${port} \
 __srcdir/script/mirrorcache minion job $extra "$@"
