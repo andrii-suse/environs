@@ -35,8 +35,10 @@ if ! zypper lr | grep "$proj\s"; then
     v=$(psql -V)
     if [[ "$v" == *10.* ]]; then
        zypper -n in postgresql10-ip4r
-    else
+    elif [[ "$v" == *12.* ]]; then
        zypper -n in postgresql12-ip4r
+    else
+       zypper -n in postgresql13-ip4r
     fi
 fi
 

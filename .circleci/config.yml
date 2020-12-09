@@ -1,6 +1,51 @@
 version: 2.1
 
 jobs:
+  test_qa:
+    docker:
+      - image: registry.opensuse.org/devel/openqa/containers/openqa_dev:latest
+        user: squamata
+    steps:
+      - run:
+          command: |
+            sudo zypper -n install git cmake ninja vim m4
+      - checkout
+      - run:
+          name: "install qemu"
+          command: |
+            sudo zypper -n addrepo http://mirrorcache.opensuse.org/download/update/leap/15.2/oss/ update
+            sudo zypper -n addrepo http://mirrorcache.opensuse.org/repositories/devel:/openQA:/ci/openSUSE_Leap_15.2 qemu
+            sudo zypper -n addrepo http://mirrorcache.opensuse.org/repositories/devel:/openQA:/Leap:/15.2/openSUSE_Leap_15.2 dev
+            sudo zypper -n --gpg-auto-import-keys --no-gpg-checks refresh
+            sudo zypper -n in --from qemu qemu qemu-tools qemu-x86 qemu-ipxe qemu-sgabios qemu-kvm qemu-seabios
+            sudo zypper -n in --from dev perl-TimeDate perl-YAML-PP
+      - run: 
+          command: |
+            AUTOSTOP=1 REBUILD=1 .test/product-test.sh qa || { cat qa9*/ui/.cerr && exit 1; }
+  
+  test_zy_branch:
+    docker:
+      - image: opensuse/leap
+    steps:
+      - run:
+          command: |
+            zypper -n addrepo https://mirrorcache.opensuse.org/download/update/leap/15.2/oss/ update
+            zypper -n install git-core tar libzypp-devel m4 \
+            cmake openssl-devel boost-devel dejagnu doxygen gcc-c++ gettext-devel graphviz libxml2-devel libproxy-devel pkg-config libsolv-devel libsolv-tools ruby rpm-devel libcurl-devel libboost_program_options*-devel libboost_test*-devel libudev-devel xorg-x11-fonts-core xorg-x11-fonts texlive-lm-fonts libgpgme-devel gpgme libboost_thread1_* yaml-cpp-devel libsigc++2-devel glib2-devel nginx FastCGI-devel "rubygem(asciidoctor)" \
+            augeas-devel gcc-c++ pkg-config boost-devel gettext-devel asciidoc readline-devel
+      - checkout
+      - run: AUTOSTOP=1 REBUILD=1 .test/product-test.sh zy master
+
+  test_zy_system2:
+    docker:
+      - image: opensuse/leap
+    steps:
+      - run:
+          command: |
+            zypper -n install git-core tar m4
+      - checkout
+      - run: AUTOSTOP=1 REBUILD=1 .test/product-test.sh zy system2
+
   test_mb:
     machine:
       image: ubuntu-1604:201903-01
@@ -9,11 +54,13 @@ jobs:
       - run:
           command: |
             git clone https://github.com/coryb/osht ../osht
-            # Mirrorbrain tests are failing for now, so need some work
-            # sudo OSHT_LOCATION=$(pwd)/../osht PRIVILEGED_TESTS=1 .product/mb/.example/system.sh
+            sudo OSHT_LOCATION=$(pwd)/../osht PRIVILEGED_TESTS=1 .product/mb/.example/system.sh
 
 workflows:
   version: 2.1
   test:
     jobs:
       - test_mb
+      - test_qa
+      - test_zy_branch
+      - test_zy_system2

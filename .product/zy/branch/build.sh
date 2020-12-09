@@ -3,7 +3,7 @@ set -e
 mkdir -p __blddir/libzypp
 cd __blddir/libzypp
 cmake -DCMAKE_INSTALL_PREFIX=__installdir __srcdir/libzypp
-make -j 16
+make -j 4
 mkdir -p __installdir
 make install
 )
@@ -11,7 +11,7 @@ make install
 mkdir -p __blddir/zypper
 cd __blddir/zypper
 cmake -DCMAKE_INSTALL_PREFIX=__installdir __srcdir/zypper
-make -j 16
+make -j 4
 make install
 )
 
