@@ -22,8 +22,11 @@ workdir="$(pwd)/${productN}"
 [[ -d "$workdir" ]] || mkdir "$workdir"
 
 srcdir="${workdir}/src"
-
+blddir="${workdir}/bld"
+installdir="${workdir}/install"
 wid=${productN: -1}
+
+opts="-D__wid=$wid -D__workdir=$workdir -D__srcdir=$srcdir -D__blddir=$blddir -D__installdir=$installdir -D__branch=$branch"
 
 [ ! -z ${branch} ] || [ -d ${2} ]
 [ ! -z ${branch} ] || ln -sf $2 $workdir/src
@@ -31,7 +34,7 @@ wid=${productN: -1}
 (
 shopt -s nullglob
 for filename in .product/.common/branch/* ; do
-    m4 -D__wid=$wid -D__workdir=$workdir -D__srcdir=$srcdir -D__branch=$branch $filename > $workdir/$(basename $filename)
+    m4 $opts $filename > $workdir/$(basename $filename)
     chmod +x $workdir/$(basename $filename)
 done
 
@@ -41,12 +44,12 @@ for filename in .product/${product}/branch/* ; do
         mkdir -p $workdir/$(basename $folder) 
         for src in ${folder}/* ; do
             dst=$workdir/$(basename $folder)/$(basename $src)
-            m4 -D__wid=$wid -D__workdir=$workdir -D__srcdir=$srcdir -D__branch=$branch $src > $dst
+            m4 $opts $src > $dst
 	    [ "${dst##*.}" != sh ] || chmod +x $dst
         done
     else
         [ ! -z ${branch} ] || [ $(basename $filename) != "clone.sh" ] || continue # skip clone.sh if branch is empty
-        m4 -D__wid=$wid -D__workdir=$workdir -D__srcdir=$srcdir -D__branch=$branch $filename > $workdir/$(basename $filename)
+        m4 $opts $filename > $workdir/$(basename $filename)
         chmod +x $workdir/$(basename $filename)
     fi
 done
@@ -56,9 +59,10 @@ done
     mkdir -p ${workdir}/${service}
     for src in .product/${product}/branch/.service/* ; do
         dst=$workdir/${service}/$(basename $src)
-        m4 -D__wid=$wid -D__workdir=$workdir -D__srcdir=$srcdir -D__branch=$branch -D__service=$service $src > $dst
+        m4 $opts -D__service=$service $src > $dst
         chmod +x $dst
     done
+    grep -q .service.lst .product/${product}/branch/.service/*.sh | grep -qv .product || cp .product/${product}/branch/.service.lst $workdir/
 done
 
 )

@@ -51,7 +51,7 @@ PLAN 1
 
 cp $thisdir/../../system/.install.sh $thisdir/
 
-baseimage=${BASEIMAGE:-opensuse/leap:15.1}
+baseimage=${BASEIMAGE:-opensuse/leap:15.2}
 obsproject=${OBSPROJECT:-Apache:MirrorBrain:development}
 
 m4 -D__BASEIMAGE=$baseimage -D__OBSPROJECT=$obsproject $thisdir/Dockerfile.m4 | \

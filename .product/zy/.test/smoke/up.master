@@ -1,0 +1,4 @@
+trap 'test -z "$intrap" && export intrap=1 && kill -- -$$ 2>/dev/null || :' SIGINT SIGTERM EXIT
+
+./environ.sh zy9-master
+

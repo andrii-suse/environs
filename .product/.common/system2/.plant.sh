@@ -34,4 +34,16 @@ for filename in .*/${product}/system2/* ; do
     m4 -D__wid=$wid -D__workdir=$workdir -D__datadir=$dt -D__port=$port $filename > $workdir/$(basename $filename)
     [[ $filename != *.sh ]] || chmod +x $workdir/$(basename $filename)
 done || :
+
+# generate services from .services.lst
+[ ! -f .product/${product}/system2/.service.lst ] || for service in $(cat .product/${product}/system2/.service.lst) ; do
+    mkdir -p ${workdir}/${service}
+    for src in .product/${product}/system2/.service/* ; do
+        dst=$workdir/${service}/$(basename $src)
+        m4 -D__wid=$wid -D__workdir=$workdir -D__datadir=$dt -D__port=$port -D__service=$service $src > $dst
+        chmod +x $dst
+    done
+    grep -q .service.lst .product/${product}/system2/.service/*.sh | grep -qv .product || cp .product/${product}/system2/.service.lst $workdir/
+done
+
 )

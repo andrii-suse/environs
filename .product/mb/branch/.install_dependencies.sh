@@ -18,8 +18,10 @@ zypper -n install --allow-vendor-change apache2-devel apache2-worker apache2-mod
 v=$(psql -V)
 if [[ "$v" == *10.* ]]; then
    zypper -n in postgresql10-ip4r
-else
+elif [[ "$v" == *12.* ]]; then
    zypper -n in postgresql12-ip4r
+elif [[ "$v" == *13.* ]]; then
+   zypper -n in postgresql13-ip4r
 fi
 
 ln /usr/sbin/httpd /sbin/httpd

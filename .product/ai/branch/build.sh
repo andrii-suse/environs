@@ -1,7 +1,7 @@
-[ -f __srcdir/Makefile.in ] || (
+(
 set -e
-cd __srcdir
-autoreconf -f -i 
-./configure
-make
+mkdir -p __blddir
+cd __blddir
+cmake -G Ninja __srcdir
+ninja symlinks
 )
