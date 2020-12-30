@@ -21,15 +21,27 @@ workdir="$(pwd)/${productN}"
 [ -z "$branch" ] || workdir="$workdir-$branch"
 [[ -d "$workdir" ]] || mkdir "$workdir"
 
+dtdir="${workdir}/dt"
 srcdir="${workdir}/src"
 blddir="${workdir}/bld"
 installdir="${workdir}/install"
 wid=${productN: -1}
 
-opts="-D__wid=$wid -D__workdir=$workdir -D__srcdir=$srcdir -D__blddir=$blddir -D__installdir=$installdir -D__branch=$branch"
+opts="-D__wid=$wid -D__workdir=$workdir -D__srcdir=$srcdir -D__blddir=$blddir -D__installdir=$installdir -D__datadir=$dtdir -D__branch=$branch"
 
-[ ! -z ${branch} ] || [ -d ${2} ]
-[ ! -z ${branch} ] || ln -sf $2 $workdir/src
+[ "$product" != ap  ] || port=$(($wid * 10 + 1234))
+[ "$product" != ap  ] || opts="$opts -D__port=$port"
+
+if test -z "${branch}" && test -d ${2}; then
+  if  ! test -d "${3}"; then
+    ln -sf $2 $workdir/src
+  else
+    mkdir -p $workdir/src
+    ln -sf $2 $workdir/src/$(basename $2)
+    ln -sf $3 $workdir/src/$(basename $3)
+  fi
+fi
+
 
 (
 shopt -s nullglob
