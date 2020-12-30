@@ -1,0 +1,16 @@
+
+set -e
+./environ.sh ap9-system2
+
+set -e
+trap 'test -z "$intrap" && export intrap=1 && kill -- -$$ 2>/dev/null || :' SIGINT SIGTERM EXIT
+
+[ -d apr ] || git clone --depth=1 https://github.com/apache/apr
+[ -d httpd ] || {
+    git clone --depth=1 https://github.com/apache/httpd
+    sed -i 's^cd $apr_src_dir^cd -P $apr_src_dir^' httpd/buildconf
+}
+
+
+./environ.sh ap9 $(pwd)/httpd
+

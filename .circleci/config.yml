@@ -5,6 +5,9 @@ jobs:
     docker:
       - image: registry.opensuse.org/devel/openqa/containers/openqa_dev:latest
         user: squamata
+    environment:
+      AUTOSTOP: 1
+      ENVIRON_REBUILD: 1
     steps:
       - run:
           command: |
@@ -21,11 +24,14 @@ jobs:
             sudo zypper -n in --from dev perl-TimeDate perl-YAML-PP
       - run: 
           command: |
-            AUTOSTOP=1 REBUILD=1 .test/product-test.sh qa || { cat qa9*/ui/.cerr && exit 1; }
+            .test/product-test.sh qa || { cat qa9*/ui/.cerr && exit 1; }
   
   test_zy_branch:
     docker:
       - image: opensuse/leap
+    environment:
+      AUTOSTOP: 1
+      ENVIRON_REBUILD: 1
     steps:
       - run:
           command: |
@@ -34,21 +40,53 @@ jobs:
             cmake openssl-devel boost-devel dejagnu doxygen gcc-c++ gettext-devel graphviz libxml2-devel libproxy-devel pkg-config libsolv-devel libsolv-tools ruby rpm-devel libcurl-devel libboost_program_options*-devel libboost_test*-devel libudev-devel xorg-x11-fonts-core xorg-x11-fonts texlive-lm-fonts libgpgme-devel gpgme libboost_thread1_* yaml-cpp-devel libsigc++2-devel glib2-devel nginx FastCGI-devel "rubygem(asciidoctor)" \
             augeas-devel gcc-c++ pkg-config boost-devel gettext-devel asciidoc readline-devel
       - checkout
-      - run: AUTOSTOP=1 REBUILD=1 .test/product-test.sh zy master
+      - run: .test/product-test.sh zy master
 
   test_zy_system2:
     docker:
       - image: opensuse/leap
+    environment:
+      AUTOSTOP: 1
+      ENVIRON_REBUILD: 1
     steps:
       - run:
           command: |
             zypper -n install git-core tar m4
       - checkout
-      - run: AUTOSTOP=1 REBUILD=1 .test/product-test.sh zy system2
+      - run: .test/product-test.sh zy system2
+
+  test_ap_system2:
+    docker:
+      - image: opensuse/leap
+    environment:
+      AUTOSTOP: 1
+      ENVIRON_REBUILD: 1
+    steps:
+      - run:
+          command: |
+            zypper -n install git-core tar m4 apache2 curl
+            ln /usr/sbin/httpd /sbin/httpd
+      - checkout
+      - run: .test/product-test.sh ap system2
+
+  test_ap_branch:
+    docker:
+      - image: opensuse/leap
+    steps:
+      - run:
+          command: |
+            zypper -n install git-core tar m4 curl
+      - checkout
+      - run:
+          command: |
+            zypper -n install libtool libapr1 libapr-util1 apr-devel apr-util-devel which glibc-devel gcc pcre-devel libserf-1-1 libserf-devel libnghttp2-14 libnghttp2-devel libcurl4 libcurl-devel make 
+      - run: .test/product-test.sh ap "branch ln"
 
   test_mb:
     machine:
       image: ubuntu-1604:201903-01
+    environment:
+      OSHT_LOCATION: /home/circleci/osht/osht.sh
     steps:
       - checkout
       - run:
@@ -62,5 +100,7 @@ workflows:
     jobs:
       - test_mb
       - test_qa
+      - test_ap_branch
+      - test_ap_system2
       - test_zy_branch
       - test_zy_system2
