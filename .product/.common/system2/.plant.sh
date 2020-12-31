@@ -41,7 +41,7 @@ done || :
     for src in .product/${product}/system2/.service/* ; do
         dst=$workdir/${service}/$(basename $src)
         m4 -D__wid=$wid -D__workdir=$workdir -D__datadir=$dt -D__port=$port -D__service=$service $src > $dst
-        chmod +x $dst
+        [[ $src != *.sh ]] || chmod +x $dst
     done
     grep -q .service.lst .product/${product}/system2/.service/*.sh | grep -qv .product || cp .product/${product}/system2/.service.lst $workdir/
 done

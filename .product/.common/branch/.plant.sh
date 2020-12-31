@@ -47,7 +47,7 @@ fi
 shopt -s nullglob
 for filename in .product/.common/branch/* ; do
     m4 $opts $filename > $workdir/$(basename $filename)
-    chmod +x $workdir/$(basename $filename)
+    [[ $filename != *.sh ]] || chmod +x $workdir/$(basename $filename)
 done
 
 for filename in .product/${product}/branch/* ; do
@@ -62,7 +62,7 @@ for filename in .product/${product}/branch/* ; do
     else
         [ ! -z ${branch} ] || [ $(basename $filename) != "clone.sh" ] || continue # skip clone.sh if branch is empty
         m4 $opts $filename > $workdir/$(basename $filename)
-        chmod +x $workdir/$(basename $filename)
+        [[ $filename != *.sh ]] || chmod +x $workdir/$(basename $filename)
     fi
 done
 
@@ -72,7 +72,7 @@ done
     for src in .product/${product}/branch/.service/* ; do
         dst=$workdir/${service}/$(basename $src)
         m4 $opts -D__service=$service $src > $dst
-        chmod +x $dst
+        [[ $src != *.sh ]] || chmod +x $dst
     done
     grep -q .service.lst .product/${product}/branch/.service/*.sh | grep -qv .product || cp .product/${product}/branch/.service.lst $workdir/
 done

@@ -18,6 +18,19 @@ case $key in
     fi
     shift # past argument
     ;;
+    --no-build|--skip-build)
+    ENVIRON_BUILD=0
+    shift
+    ;;
+    --build)
+    if [[ "$2" == --* ]] || [ -z "$2" ]; then 
+        ENVIRON_BUILD=1
+    else
+        ENVIRON_BUILD="$2"
+        shift # past value
+    fi
+    shift # past argument
+    ;;
     *)    # unknown option
     POSITIONAL+=("$1") # save it in an array for later
     shift # past argument
@@ -83,5 +96,5 @@ else
 fi
 
 [ ! -x ./${1}*/clone.sh ] || ./${1}*/clone.sh || :
-[ ! -x ./${1}*/build.sh ] || ./${1}*/build.sh
-[ ! -x ./${1}*/init_db.sh ] || ./${1}*/init_db.sh
+[ "$ENVIRON_BUILD" == 0 ] || [ ! -x ./${1}*/build.sh   ] || ./${1}*/build.sh
+[ "$ENVIRON_INIT"  == 0 ] || [ ! -x ./${1}*/init_db.sh ] || ./${1}*/init_db.sh
