@@ -1,16 +1,17 @@
 trap 'test -z "$intrap" && export intrap=1 && kill -- -$$ 2>/dev/null || :' SIGINT SIGTERM EXIT
 
 ./environ.sh pg9-system2
-./environ.sh mc9-system2
 
 ./environ.sh ap8-system2
 ./environ.sh ap7-system2
 
-# git clone https://github.com/andrii-suse/MirrorCache || :
 
 ./environ.sh mc9 $(pwd)/MirrorCache
 
-pg9*/status.sh 2 > /dev/null || pg9*/start.sh
+pg9*/start.sh
+pg9*/create.sh db mc_test
+pg9*/sql.sh -f mc9*/src/sql/schema.sql mc_test
+
 mc9*/configure_db.sh pg9
 
 for x in ap7 ap8; do
@@ -18,6 +19,12 @@ for x in ap7 ap8; do
     echo $x-system2/dt/downloads/{folder1,folder2,folder3}/{file1,file2}.dat | xargs -n 1 touch
 done
 
+for x in mc9; do
+    mkdir -p $x/dt/{folder1,folder2,folder3}
+    echo $x/dt/{folder1,folder2,folder3}/{file1,file2}.dat | xargs -n 1 touch
+done
+
 mc9*/start.sh
 mc9*/status.sh
-mc9*/curl.sh downloads/folder1/ | grep file1.dat
+
+mc9*/curl.sh download/folder1/ | grep file1.dat
