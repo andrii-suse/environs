@@ -22,16 +22,21 @@ wid=${productN: -1}
 
 (
 
-[ "$product" != ap  ] || port=$(($wid * 10 + 1234))
+{ [ "$product" != ap  ] && [ "$product" != ng ]; } || {
+    [ "$product" != ap  ] || port=$(($wid * 10 + 1234))
+    [ "$product" != ng  ] || port=$(($wid * 10 + 2200))
+}
+
+[ ! -z "$USER" ] || export USER=$(whoami)
 
 shopt -s nullglob
 for filename in .product/.common/system2/* ; do
-    m4 -D__wid=$wid -D__workdir=$workdir -D__datadir=$dt -D__port=$port $filename > $workdir/$(basename $filename)
+    m4 -D__wid=$wid -D__workdir=$workdir -D__datadir=$dt -D__port=$port -D__user=$USER $filename > $workdir/$(basename $filename)
     [[ $filename != *.sh ]] || chmod +x $workdir/$(basename $filename)
 done || :
 
 for filename in .*/${product}/system2/* ; do
-    m4 -D__wid=$wid -D__workdir=$workdir -D__datadir=$dt -D__port=$port $filename > $workdir/$(basename $filename)
+    m4 -D__wid=$wid -D__workdir=$workdir -D__datadir=$dt -D__port=$port -D__user=$USER $filename > $workdir/$(basename $filename)
     [[ $filename != *.sh ]] || chmod +x $workdir/$(basename $filename)
 done || :
 
@@ -40,7 +45,7 @@ done || :
     mkdir -p ${workdir}/${service}
     for src in .product/${product}/system2/.service/* ; do
         dst=$workdir/${service}/$(basename $src)
-        m4 -D__wid=$wid -D__workdir=$workdir -D__datadir=$dt -D__port=$port -D__service=$service $src > $dst
+        m4 -D__wid=$wid -D__workdir=$workdir -D__datadir=$dt -D__port=$port -D__service=$service -D__user=$USER $src > $dst
         chmod +x $dst
     done
     grep -q .service.lst .product/${product}/system2/.service/*.sh | grep -qv .product || cp .product/${product}/system2/.service.lst $workdir/
