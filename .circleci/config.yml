@@ -21,11 +21,11 @@ jobs:
             sudo zypper -n addrepo http://mirrorcache.opensuse.org/repositories/devel:/openQA:/Leap:/15.2/openSUSE_Leap_15.2 dev
             sudo zypper -n --gpg-auto-import-keys --no-gpg-checks refresh
             sudo zypper -n in --from qemu qemu qemu-tools qemu-x86 qemu-ipxe qemu-sgabios qemu-kvm qemu-seabios
-            sudo zypper -n in --from dev perl-TimeDate perl-YAML-PP
-      - run: 
+            sudo zypper -n in --from dev perl-TimeDate perl-YAML-PP  perl-Filesys-Df
+      - run:
           command: |
             .test/product-test.sh qa || { cat qa9*/ui/.cerr && exit 1; }
-  
+
   test_zy_branch:
     docker:
       - image: opensuse/leap
@@ -69,6 +69,19 @@ jobs:
       - checkout
       - run: .test/product-test.sh ap system2
 
+  test_ng_system2:
+    docker:
+      - image: opensuse/leap
+    environment:
+      AUTOSTOP: 1
+      ENVIRON_REBUILD: 1
+    steps:
+      - run:
+          command: |
+            zypper -n install git-core tar m4 nginx curl coreutils
+      - checkout
+      - run: .test/product-test.sh ng system2
+
   test_ap_branch:
     docker:
       - image: opensuse/leap
@@ -79,7 +92,7 @@ jobs:
       - checkout
       - run:
           command: |
-            zypper -n install libtool libapr1 libapr-util1 apr-devel apr-util-devel which glibc-devel gcc pcre-devel libserf-1-1 libserf-devel libnghttp2-14 libnghttp2-devel libcurl4 libcurl-devel make 
+            zypper -n install libtool libapr1 libapr-util1 apr-devel apr-util-devel which glibc-devel gcc pcre-devel libserf-1-1 libserf-devel libnghttp2-14 libnghttp2-devel libcurl4 libcurl-devel make
       - run: .test/product-test.sh ap "branch ln"
 
   test_mb:
@@ -99,8 +112,9 @@ workflows:
   test:
     jobs:
       - test_mb
-      - test_qa
+      # - test_qa
       - test_ap_branch
       - test_ap_system2
-      - test_zy_branch
-      - test_zy_system2
+      - test_ng_system2
+      # - test_zy_branch
+      # - test_zy_system2
